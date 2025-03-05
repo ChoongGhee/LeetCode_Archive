@@ -1,47 +1,34 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
-    public:
-        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-            ListNode* result = new ListNode();
-            int carry = 0;
-            ListNode* current = result;
-            ListNode* prev;
-
-            while(l1 || l2){
-                int sum = carry;
-
-                if(l1 && l2) sum += l1->val + l2->val;
-                else if(l1 && !l2) sum += l1->val;
-                else sum += l2->val;
-                
-                // 실수 1 1의 자리만 남기려면 % 사용
-                // current->val = sum - 10;
-                current->val = sum % 10;
-                carry = sum / 10;
-
-                if(l1) l1 = l1->next;
-                if(l2) l2 = l2->next;
-
-                current->next = new ListNode();
-                prev = current;
-                current = current->next;
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode();
+        ListNode* current = dummy;
+        int carry = 0;
+        
+        // l1이나 l2가 있거나 carry가 있으면 계속 진행
+        while(l1 || l2 || carry) {
+            int sum = carry;
+            
+            // 조건문 단순화
+            if(l1) {
+                sum += l1->val;
+                l1 = l1->next;
             }
-
-            if(carry) current->val = carry;
-            else {
-                delete prev->next;
-                prev->next = nullptr;
+            
+            if(l2) {
+                sum += l2->val;
+                l2 = l2->next;
             }
-
-            return result;
+            
+            current->next = new ListNode(sum % 10);
+            carry = sum / 10;
+            current = current->next;
         }
-    };
+        
+        // 첫 번째 더미 노드는 사용하지 않으므로
+        ListNode* result = dummy->next;
+        delete dummy;
+        
+        return result;
+    }
+};
