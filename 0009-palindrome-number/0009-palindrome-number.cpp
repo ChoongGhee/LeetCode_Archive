@@ -15,7 +15,6 @@ class Solution {
             hi = str.size() -1;
 
             while(lo <= hi){
-                cout << lo << " " << str[lo] << " " << hi << " " << str[hi] << endl;
                 if(str[lo++] != str[hi--]) return false;
             }
 
