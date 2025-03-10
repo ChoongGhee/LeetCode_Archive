@@ -1,23 +1,15 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
 class Solution {
     public:
         bool isPalindrome(int x) {
-            if(x<0) return false;
-            
-            string str = to_string(x);
-            
-            int lo, hi;
-            lo = 0;
-            hi = str.size() -1;
+            if(x < 0 || (x >0 && x % 10 == 0)) return false;
 
-            while(lo <= hi){
-                if(str[lo++] != str[hi--]) return false;
+            int half = 0;
+
+            while(half < x){
+                half = (half * 10) + (x % 10);
+                x /= 10;
             }
 
-            return true;
+            return half == x || half / 10 == x;
         }
     };
