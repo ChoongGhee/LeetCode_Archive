@@ -1,47 +1,40 @@
 #include <string>
-#include <iostream>
-
 using namespace std;
 
 class Solution {
 public:
     string longestPalindrome(string s) {
-        if(s.size() == 1) return s;
+        if (s.size() <= 1) return s;
         
-        string result;
-        for(int i = 0; i < s.size(); i++){
-            // 홀수 길이 회문 확인 (중심이 한 문자)
-            string temp1 = expandAroundCenter(s, i, i);
-            if(temp1.size() > result.size()) result = temp1;
+        int start = 0, maxLength = 1;
+        
+        // 모든 가능한 중심점에서 확장
+        for (int i = 0; i < s.length(); i++) {
+            // 홀수 길이 회문 (중심이 한 문자)
+            expandAroundCenter(s, i, i, start, maxLength);
             
-            // 짝수 길이 회문 확인 (중심이 두 문자 사이)
-            if(i < s.size() - 1) {
-                string temp2 = expandAroundCenter(s, i, i+1);
-                if(temp2.size() > result.size()) result = temp2;
+            // 짝수 길이 회문 (중심이 두 문자 사이)
+            if (i < s.length() - 1) {
+                expandAroundCenter(s, i, i + 1, start, maxLength);
             }
         }
         
-        return result;
+        return s.substr(start, maxLength);
     }
-
-    string expandAroundCenter(string s, int left, int right){
-        string result;
+    
+private:
+    void expandAroundCenter(const string& s, int left, int right, int& start, int& maxLength) {
+        // 양쪽으로 확장하면서 회문인지 확인
+        while (left >= 0 && right < s.length() && s[left] == s[right]) {
+            left--;
+            right++;
+        }
         
-        // 초기 상태가 짝수 길이 시작인 경우 (left != right), 빈 문자열부터 시작
-        // 초기 상태가 홀수 길이 시작인 경우 (left == right), 중심 문자 추가
-        if(left == right) {
-            result.push_back(s[left]);
-            left--;
-            right++;
+        // 확장이 끝난 후, 회문의 길이 계산 (left+1부터 right-1까지가 회문)
+        int length = right - left - 1;
+        if (length > maxLength) {
+            maxLength = length;
+            start = left + 1;
         }
-
-        while(left >= 0 && right < s.size() && s[left] == s[right]){
-            result = s[left] + result;
-            result.push_back(s[right]);
-            left--;
-            right++;
-        }
-
-        return result;
     }
 };
