@@ -10,8 +10,6 @@ class Solution {
                 int val = he*(r-l);
                 if(max < val) max = val;
 
-                cout << max << " " << l << " " << r << endl;
-
                 height[l] < height[r] ? l++ : r--;
             }
 
