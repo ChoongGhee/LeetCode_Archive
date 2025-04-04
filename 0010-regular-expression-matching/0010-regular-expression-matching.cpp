@@ -2,7 +2,9 @@ class Solution {
     public:
         bool isMatch(string s, string p) {
         // vecotr<vector> bool 과 new **bool을 봤을 때 벡터 쪽이 오버해드가 있어 느리다고 판단했음. 속도 측면에선 맞음. but 메모리 측면에선 크게 달랐음 이유는 옵시디언에 정리. so 속도차이 미미(n배열이 최대 20x20이기 때문), 메모리 사용량은 크기 때문에 vector쓰기로 함.
-            // return dfs(s, p, 0, 0);
+            unordered_map<string, bool> memo;
+            return dfs(s, p, 0, 0, memo);
+
             int m = s.length();
             int n = p.length();
 
@@ -39,14 +41,33 @@ class Solution {
 
         }
 
-        bool dfs(const string& s, const string& p, int i = 0, int j = 0){
+
+        bool dfs(const string& s, const string& p, int i, int j, unordered_map<string, bool>& memo) {
+            // 종료 조건 확인
             if (j == p.length()) return i == s.length();
             
-            bool match = (j < s.size() && (s[i] == p[j] || p[j] == '.'));
-
-            if( (j+1 < p.size()) && p[j+1] == '*'){
-                return dfs(s,p,i,j+2) || (match && dfs(s,p,i+1, j));
+            // 현재 상태를 키로 사용
+            string key = to_string(i) + "," + to_string(j);
+            
+            // 이미 계산된 결과가 있으면 반환
+            if (memo.find(key) != memo.end()) {
+                return memo[key];
             }
-            else return match && dfs(s,p,i+1, j+1);
+            
+            // 현재 문자 매칭 여부 확인
+            bool match = (i < s.size() && (s[i] == p[j] || p[j] == '.'));
+            
+            bool result;
+            if ((j+1 < p.size()) && p[j+1] == '*') {
+                // '*' 패턴일 경우: 0번 매칭하거나 1번 이상 매칭
+                result = dfs(s, p, i, j+2, memo) || (match && dfs(s, p, i+1, j, memo));
+            } else {
+                // A single character match
+                result = match && dfs(s, p, i+1, j+1, memo);
+            }
+            
+            // 결과 저장하고 반환
+            memo[key] = result;
+            return result;
         }
     };
