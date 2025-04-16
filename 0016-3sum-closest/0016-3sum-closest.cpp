@@ -20,7 +20,10 @@ public:
 
                 if(sum<target) left++;
                 else if(sum>target) right--;
-            
+                else{
+                    return sum;
+                }
+
                 if(abs(target - result) > abs(target - sum)) result = sum;
             }
         }
