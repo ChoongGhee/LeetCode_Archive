@@ -17,6 +17,13 @@ public:
                 
                 if((temp[i][j] && (cnt == 2 || cnt == 3)) || (!temp[i][j] && cnt == 3)) board[i][j] = 1;
                 else board[i][j] = 0;
+
+                // 실수 : 두 조건문 을 사용해 덮어씌워지는 현상이 일어나서 잘못됨
+                // if(temp[i][j] && (cnt == 2 || cnt == 3)) board[i][j] = 1;
+                // else board[i][j] = 0;
+                
+                // if(!temp[i][j] && cnt == 3) board[i][j] = 1;
+                // else board[i][j] = 0;
             }
         }
     }
