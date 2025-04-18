@@ -13,12 +13,10 @@ public:
         for(int i =0;i<row;i++){
             for(int j = 0;j<col;j++){
                 int cnt = 0;
-                for(auto check : directions)if(-1< i+check[0] && i+check[0] < row && -1 < j+check[1] && j+check[1] < col && temp[i+check[0]][j+check[1]]) cnt++;
-                if(temp[i][j] && (cnt == 2 || cnt == 3)) board[i][j] = 1;
+                for(auto& check : directions)if(-1< i+check[0] && i+check[0] < row && -1 < j+check[1] && j+check[1] < col && temp[i+check[0]][j+check[1]]) cnt++;
+                
+                if((temp[i][j] && (cnt == 2 || cnt == 3)) || (!temp[i][j] && cnt == 3)) board[i][j] = 1;
                 else board[i][j] = 0;
-
-                if(!temp[i][j] && cnt == 3) board[i][j] = 1;
-                else board[i][j] - 0;
             }
         }
     }
