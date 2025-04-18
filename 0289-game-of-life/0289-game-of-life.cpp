@@ -17,6 +17,7 @@ class Solution {
                     
                     for(int dx = -1;dx <= 1; dx++){
                         for(int dy = -1;dy<=1;dy++){
+                            if(dx == 0 && dy == 0) continue;
                             if(-1< i+dx && i+dx < row && -1 < j+dy && j+dy < col && (board[i+dx][j+dy] == 1 || board[i+dx][j+dy] == 3)) cnt++;
                         }
                     }   
