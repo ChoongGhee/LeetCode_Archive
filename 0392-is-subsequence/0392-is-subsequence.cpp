@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool isSubsequence(const string& s, const string& t) {
+    bool isSubsequence(const string s, const string t) {
         int sidx = 0;
         int tidx = 0;
 
