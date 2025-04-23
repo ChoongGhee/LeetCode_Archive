@@ -13,37 +13,29 @@ class Solution {
 public:
     vector<double> averageOfLevels(TreeNode* root) {
         vector<double> result;
+        if (!root) return result;
 
-        queue<pair<TreeNode*, int>> q;
-        q.push(make_pair(root, 0));
-
-        double sum = 0;
-        int cur_lv = 0;
-        int cnt = 0;
-
-        while(!q.empty()){
-            pair<TreeNode*, int> front = q.front();
-
-            if( cur_lv != front.second ){
-                result.push_back((double)sum/cnt);
-                
-                sum = 0;
-                cnt = 0;
-                cur_lv = front.second;
-                
-            }
-
-            sum += front.first->val;
-            cnt++;
-
-            if(front.first->left) q.push(make_pair(front.first->left, front.second+1));
-            if(front.first->right) q.push(make_pair(front.first->right, front.second+1));
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        while (!q.empty()) {
+            int size = q.size();  // 현재 레벨의 노드 수
+            double sum = 0;
             
-            q.pop();
+            // 현재 레벨의 모든 노드 처리
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+                
+                sum += node->val;
+                
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+            
+            result.push_back(sum / size);
         }
-
-        if(cnt > 0)  result.push_back((double)sum/cnt);
-
+        
         return result;
     }
 };
