@@ -2,22 +2,23 @@ class Solution {
 public:
     int numberOfArrays(vector<int>& differences, int lower, int upper) {
         
-        long long min_val, max_val, cur;
-        min_val = 0;
-        max_val = 0;
-        cur = 0;
-
-        for(auto val : differences){
-            cur += val;
-            min_val = std::min(min_val, cur);
-            max_val = std::max(max_val, cur);
+        // prefix를 0으로 하는 이유는 수식의 x-prefix(최소 or 최대)값인 prefix를 그대로 구할 수 있게됨. 그것을 활용해 x의 범위를 구할 수 있음.
+        long long prefix = 0;
+        int max_val = -100001;
+        int min_val = 100001;
+        for(int val : differences){
+            prefix += val;
+            if(min_val > prefix) min_val = prefix;
+            if(max_val < prefix) max_val = prefix;
         }
 
-        long long min_start = lower - min_val;
-        long long max_start = upper - max_val;
-    
-        if (min_start > max_start) return 0;
-        return std::max(0LL, max_start - min_start + 1);
+        // 두가지 조건에 맞는 값을 정하는 부분
+        long long low = max((long long)lower, (long long)lower - min_val);
+        long long high = min((long long)upper, (long long)upper - max_val);
+
+        if(low > high) return 0;
+        
+        return high - low +1;
     }
 
 };
